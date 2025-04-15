@@ -115,6 +115,7 @@ class CollectionDocument(utils.PayloadWrapper, abc.ABC):
         "enable_https": (1, 1, 0),
         "user_message": (1, 1, 0),
         "user_message_link": (1, 1, 0),
+        "activity_notification_policy": (1, 14, 0),
     }
     DATATYPE_VERSION_CALLBACKS: tuple[DatatypeCallback, ...] = (
         _user_message_length_callback,
@@ -380,6 +381,8 @@ class GuestCollectionDocument(CollectionDocument):
         # > specific args start <
         mapped_collection_id: UUIDLike | None = None,
         user_credential_id: UUIDLike | None = None,
+        # dicts
+        activity_notification_policy: dict[str, list[str]] | None = None,
         # > specific args end <
         # additional fields
         additional_fields: dict[str, t.Any] | None = None,
@@ -415,6 +418,8 @@ class GuestCollectionDocument(CollectionDocument):
             mapped_collection_id=mapped_collection_id,
             user_credential_id=user_credential_id,
         )
+        self._set_value("activity_notification_policy", activity_notification_policy)
+
         ensure_datatype(self)
 
 
